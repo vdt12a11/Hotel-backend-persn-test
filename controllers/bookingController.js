@@ -18,7 +18,7 @@
             room,
             formData,
             totalPrice,
-            date: new Date().toISOString()
+            date: date || new Date().toISOString()
         });
 
         console.log("Tạo booking thành công");
