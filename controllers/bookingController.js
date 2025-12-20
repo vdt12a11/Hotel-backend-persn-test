@@ -31,7 +31,7 @@ const checkInBooking = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const booking = await Booking.findById(id);
+    const booking = await Booking.find({id});
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
@@ -60,7 +60,7 @@ const checkOutBooking = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const booking = await Booking.findById(id);
+    const booking = await Booking.find({id});
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }

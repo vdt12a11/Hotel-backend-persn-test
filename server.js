@@ -21,7 +21,7 @@ app.use('/auth', require('./routes/auth'));
 app.use('/room', require('./routes/room'));
 app.use('/history', require('./routes/history'));
 app.use('/booking', require('./routes/booking'));
-
+app.use('/profile', require('./routes/profile'));
 app.get('/', (req, res) => {
     res.send('Hello from Express server!');
 });
