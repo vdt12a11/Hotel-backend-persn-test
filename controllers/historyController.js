@@ -11,6 +11,7 @@ const getHistory = async (req, res) => {
 
     const bookings = await Booking.find({ userID }).
     select({
+        _id:1,
         "room.name": 1,
         "room.price": 1,
         "room.image": 1,

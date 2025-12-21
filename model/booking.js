@@ -25,6 +25,14 @@ const bookingSchema = new mongoose.Schema({
       enum: ["booked", "checked_in", "checked_out"],
       default: "booked",
     },
+    checkedInAt: {
+      type: Date,
+      default: null
+    },
+    checkedOutAt: {
+      type: Date,
+      default: null
+    },
     createdAt: {
       type: Date,
       default: () => new Date().toISOString(),

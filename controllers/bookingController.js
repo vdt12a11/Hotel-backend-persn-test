@@ -28,14 +28,16 @@ try {
 }
 
 const checkInBooking = async (req, res) => {
+  
   try {
     const { id } = req.params;
-
-    const booking = await Booking.find({id});
+    
+    const booking = await Booking.findById(id);
+    console.log(id);
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
-
+    console.log(booking);
     if (booking.status !== "booked") {
       return res.status(400).json({
         message: "Booking cannot be checked in"
@@ -43,7 +45,7 @@ const checkInBooking = async (req, res) => {
     }
 
     booking.status = "checked_in";
-    booking.checkedInAt = new Date();
+    booking.checkedInAt = new Date().toISOString();
 
     await booking.save();
 
@@ -60,7 +62,7 @@ const checkOutBooking = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const booking = await Booking.find({id});
+    const booking = await Booking.findById(id);
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
@@ -72,7 +74,7 @@ const checkOutBooking = async (req, res) => {
     }
 
     booking.status = "checked_out";
-    booking.checkedOutAt = new Date();
+    booking.checkedOutAt = new Date().toISOString();
 
     await booking.save();
 
