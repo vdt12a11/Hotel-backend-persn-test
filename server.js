@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const app = express();
 const verifyJWT = require('./middleware/verifyJWT');
-const connectDB = require('./config/dbConn');
+const connectDB = require('./config/dBConn');
 connectDB();
 const PORT = 3000;
 app.use(express.json());
