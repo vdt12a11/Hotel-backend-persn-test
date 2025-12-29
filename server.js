@@ -22,20 +22,11 @@ app.use('/room', require('./routes/room'));
 app.use('/history', require('./routes/history'));
 app.use('/booking', require('./routes/booking'));
 app.use('/profile', require('./routes/profile'));
+app.use('/payment', require('./routes/payment'));
 app.get('/', (req, res) => {
     res.send('Hello from Express server!');
 });
 
-// Thêm 1 API mẫu
-// app.get('/register', (req, res) => {
-//     res.json({
-//         name: 'Tuan',
-//         age: 22,
-//         message: 'Welcome to my Express API!'
-//     });
-// });
-
-// Start server
 app.listen(PORT, () => {
     console.log(`Server đang chạy tại http://localhost:${PORT}`) ;
 });
