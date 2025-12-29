@@ -5,6 +5,25 @@ const getAllRoom = async (req, res) => {
     if (!rooms) return res.status(204).json({ 'message': 'No room found.' });
     res.json(rooms);
 }
+const getAvailableRooms = async (req, res) => {
+  const { checkIn, checkOut } = req.query;
+
+  if (!checkIn || !checkOut) {
+    return res.status(400).json({ message: "Missing dates" });
+  }
+
+  const bookedRoomIds = await Booking.find({
+    status: { $ne: "checked_out" },
+    checkIn: { $lt: new Date(checkOut) },
+    checkOut: { $gt: new Date(checkIn) }
+  }).distinct("room");
+
+  const availableRooms = await Room.find({
+    _id: { $nin: bookedRoomIds }
+  });
+
+  res.json(availableRooms);
+};
 
 const createNewRoom = async (req, res) => {
     // if (!req?.body?.firstname || !req?.body?.lastname) {
@@ -39,5 +58,6 @@ const getRoom = async (req, res) => {
 module.exports = {
     getAllRoom,
     createNewRoom,
-    getRoom
+    getRoom,
+    getAvailableRooms
 }
