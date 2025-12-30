@@ -226,4 +226,8 @@ const linkingMomo = async(req,res) => {
     return res.status(500).json({ statusCode: 500, message: error.message });
   }
 };
-module.exports={deeplink,linkingMomo}
+const callback = async(req,res) => {
+  console.log('callback: ');
+  console.log(req.body);
+};
+module.exports={deeplink,linkingMomo,callback}

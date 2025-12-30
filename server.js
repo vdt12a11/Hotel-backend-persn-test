@@ -24,7 +24,7 @@ app.use('/booking', require('./routes/booking'));
 app.use('/profile', require('./routes/profile'));
 app.use('/payment', require('./routes/payment'));
 app.get('/', (req, res) => {
-    res.send('Hello from Express server!');
+    res.send('lien ket vi thanh cong!');
 });
 
 app.listen(PORT, () => {
