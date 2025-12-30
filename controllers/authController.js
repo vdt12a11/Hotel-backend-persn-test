@@ -22,7 +22,8 @@ const handleLogin = async (req, res) => {
         // create JWTs
         
         res.status(201).json({ 'userID': foundUser._id,
-                                'name':foundUser.name});
+                                'name':foundUser.name,
+                            'email':foundUser.email});
         
     } else {
         res.status(401).json({ 'messagee': 'Sai emai va mat khau2' });;

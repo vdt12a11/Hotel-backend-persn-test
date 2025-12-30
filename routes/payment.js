@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const roomController = require('../controllers/roomController');
+const paymentController = require('../controllers/paymentController');
 
-router.route('/')
-    .get(roomController.getAllRoom)
+router.route('/link-wallet')
+    .post(paymentController.linkingMomo)
 module.exports = router;

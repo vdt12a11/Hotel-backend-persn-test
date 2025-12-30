@@ -1,4 +1,5 @@
 const User = require('../model/user');
+const config = require('../config/momoConfig');
 const deeplink = async() =>{
     let {
         accessKey,
@@ -127,4 +128,100 @@ const generateLink = async (req, res) => {
 
   return res.status(200).json(result.data);
 };
-module.exports={deeplink}
+const linkingMomo = async(req,res) => {
+  console.log('linkmmo');
+  let {
+    accessKey,
+    secretKey,
+    orderInfo,
+    partnerCode,
+    redirectUrl,
+    ipnUrl,
+    requestType,
+    extraData,
+    orderGroupId,
+    autoCapture,
+    lang,
+  } = config;
+
+  var amount = '0';
+  var orderId = partnerCode + new Date().getTime();
+  var requestId = orderId;
+  const {userID,email} =req.body;
+  
+  //before sign HMAC SHA256 with format
+  //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
+  var rawSignature =
+    'accessKey=' +
+    accessKey +
+    '&amount=' +
+    amount +
+    '&extraData=' +
+    extraData +
+    '&ipnUrl=' +
+    ipnUrl +
+    '&orderId=' +
+    orderId +
+    '&orderInfo=' +
+    orderInfo +
+    '&partnerClientId=' +
+    userID +
+    '&partnerCode=' +
+    partnerCode +
+    '&redirectUrl=' +
+    redirectUrl +
+    '&requestId=' +
+    requestId +
+    '&requestType=' +
+    'linkWallet';
+
+  //signature
+  var signature = crypto
+    .createHmac('sha256', secretKey)
+    .update(rawSignature)
+    .digest('hex');
+
+  //json object send to MoMo endpoint
+  const requestBody = JSON.stringify({
+    partnerCode: partnerCode,
+    partnerName: 'Test',
+    storeId: 'MomoTestStore',
+    requestId: requestId,
+    amount: amount,
+    orderId: orderId,
+    orderInfo: orderInfo,
+    redirectUrl: redirectUrl,
+    ipnUrl: ipnUrl,
+    lang: lang,
+    requestType: 'linkWallet',
+    autoCapture: autoCapture,
+    extraData: extraData,
+    orderGroupId: orderGroupId,
+    signature: signature,
+    partnerClientId: userID,
+    userInfo: {
+      partnerClientAlias: email,
+    },
+  });
+  console.log(requestBody);
+  // options for axios
+  const options = {
+    method: 'POST',
+    url: 'https://test-payment.momo.vn/v2/gateway/api/create',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(requestBody),
+    },
+    data: requestBody,
+  };
+
+  // Send the request and handle the response
+  let result;
+  try {
+    result = await axios(options);
+    return res.status(200).json(result.data);
+  } catch (error) {
+    return res.status(500).json({ statusCode: 500, message: error.message });
+  }
+};
+module.exports={deeplink,linkingMomo}
