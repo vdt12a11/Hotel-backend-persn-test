@@ -1,30 +1,51 @@
 const Booking = require('../model/booking');
-
+const cron = require('node-cron');
+const paymentController = require('../controllers/paymentController');
+cron.schedule('* * * * *', async () => {  // chạy mỗi phút
+  const oneHourAgo = new Date(Date.now() - 60*60*1000);
+  await Booking.updateMany(
+    { status: 'pending', createdAt: { $lte: oneHourAgo } },
+    { status: 'expired' }
+  );
+  console.log('Checked bookings at', new Date());
+});
 const handleBooking = async (req, res) => {
-try {
-    const { room, formData,  totalPrice, userID,date } = req.body;
-    console.log(room, formData, userID,date);
-    // Kiểm tra dữ liệu
-    if (!room || !formData || !userID) {
-        console.log("Thiếu dữ liệu bắt buộc");
-        return res.status(400).json({ message: "Missing required fields" });
-    }
-    // Tạo object booking
-    const newBooking = await Booking.create({
-        userID,
-        room,
-        formData,
-        totalPrice,
-        date:date || new Date().toISOString()
+  const { room, formData,  totalPrice, userID,date } = req.body;
+  try {
+      totalPrices=20000;
+      // Kiểm tra dữ liệu
+      if (!room || !formData || !userID) {
+          console.log("Thiếu dữ liệu bắt buộc");
+          return res.status(400).json({ message: "Missing required fields" });
+      }
+      // Tạo object booking
+      const newBooking = await Booking.create({
+          userID,
+          room,
+          formData,
+          totalPrice,
+          date:date || new Date().toISOString()
+      });
+      const orderId = `MOMO${newBooking._id}${Date.now()}`;
+       newBooking.orderId = orderId;
+      await newBooking.save();
+      
+      const momoRes = await paymentController.createPayment({
+        orderId,
+        amount: totalPrices
+      });
+      console.log(momoRes);
+      console.log("Tạo booking thành cônggg");
+      return res.status(201).json({
+      bookingId: newBooking._id,
+      orderId,
+      deeplink: momoRes.deeplink,
+      status: 'pending',
     });
-
-    console.log("Tạo booking thành công");
-    res.status(201).json({ message: "Booking created", booking: newBooking });
-
-} catch (err) {
-    console.log("Không tạo được booking:", err.message);
-    res.status(500).json({ message: err.message });
-}
+  } catch (err) {
+      console.log("Không tạo được booking:", err.message);
+      res.status(500).json({ message: err.message });
+  }
 }
 
 const checkInBooking = async (req, res) => {

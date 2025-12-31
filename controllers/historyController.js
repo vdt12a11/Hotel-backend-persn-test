@@ -20,6 +20,7 @@ const getHistory = async (req, res) => {
         "formData.email": 1,
         "formData.checkIn": 1,
         "formData.checkOut": 1,
+        orderId:1,
         totalPrice: 1,
         createdAt: 1,
         status:1

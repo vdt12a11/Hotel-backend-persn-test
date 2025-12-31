@@ -2,279 +2,8 @@ const User = require('../model/user');
 const config = require('../config/momoConfig');
 const axios = require('axios');
 const crypto = require('crypto');
-const getToken=async()=>{
-  let {
-    accessKey,
-    secretKey,
-    orderInfo,
-    partnerCode,
-    redirectUrl,
-    ipnUrl,
-    requestType,
-    extraData,
-    orderGroupId,
-    autoCapture,
-    lang,
-  } = config;
-  const {userID}=req.body;
-  var amount = '10000';
-  var orderId = partnerCode + new Date().getTime();
-  var requestId = orderId;
-
-  //before sign HMAC SHA256 with format
-  //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
-  var rawSignature =
-    'accessKey=' +
-    accessKey +
-    '&amount=' +
-    amount +
-    '&extraData=' +
-    extraData +
-    '&ipnUrl=' +
-    ipnUrl +
-    '&orderId=' +
-    orderId +
-    '&orderInfo=' +
-    orderInfo +
-    // '&partnerClientId=' +
-    // userID +
-    '&partnerCode=' +
-    partnerCode +
-    '&redirectUrl=' +
-    redirectUrl +
-    '&requestId=' +
-    requestId +
-    '&requestType=' +
-    requestType;
-
-  //signature
-  var signature = crypto
-    .createHmac('sha256', secretKey)
-    .update(rawSignature)
-    .digest('hex');
-
-  //json object send to MoMo endpoint
-  const requestBody = JSON.stringify({
-    //partnerClientId:userID,
-    partnerCode: partnerCode,
-    requestId: requestId,
-    amount: amount,
-    orderId: orderId,
-    orderInfo: orderInfo,
-    redirectUrl: redirectUrl,
-    ipnUrl: ipnUrl,
-    lang: lang,
-    requestType: requestType,
-    autoCapture: autoCapture,
-    extraData: extraData,
-    orderGroupId: orderGroupId,
-    signature: signature,
-  });
-  console.log(requestBody);
-  // options for axios
-  const options = {
-    method: 'POST',
-    url: 'https://test-payment.momo.vn//v2/gateway/api/tokenization/bind',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(requestBody),
-    },
-    data: requestBody,
-  };
-
-  // Send the request and handle the response
-  let result;
-  try {
-    result = await axios(options);
-    return res.status(200).json(result.data);
-  } catch (error) {
-    return res.status(500).json({ statusCode: 500, message: error.message });
-  }
-}
-const createPayment = async(req,res)=>{
-  let {
-    accessKey,
-    secretKey,
-    orderInfo,
-    partnerCode,
-    redirectUrl,
-    ipnUrl,
-    requestType,
-    extraData,
-    orderGroupId,
-    autoCapture,
-    lang,
-  } = config;
-  const {userID}=req.body;
-  var amount = '10000';
-  var orderId = partnerCode + new Date().getTime();
-  var requestId = orderId;
-
-  //before sign HMAC SHA256 with format
-  //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
-  var rawSignature =
-    'accessKey=' +
-    accessKey +
-    '&amount=' +
-    amount +
-    '&extraData=' +
-    extraData +
-    '&ipnUrl=' +
-    ipnUrl +
-    '&orderId=' +
-    orderId +
-    '&orderInfo=' +
-    orderInfo +
-    // '&partnerClientId=' +
-    // userID +
-    '&partnerCode=' +
-    partnerCode +
-    '&redirectUrl=' +
-    redirectUrl +
-    '&requestId=' +
-    requestId +
-    '&requestType=' +
-    requestType;
-
-  //signature
-  var signature = crypto
-    .createHmac('sha256', secretKey)
-    .update(rawSignature)
-    .digest('hex');
-
-  //json object send to MoMo endpoint
-  const requestBody = JSON.stringify({
-    //partnerClientId:userID,
-    partnerCode: partnerCode,
-    partnerName: 'Test',
-    storeId: 'MomoTestStore',
-    requestId: requestId,
-    amount: amount,
-    orderId: orderId,
-    orderInfo: orderInfo,
-    redirectUrl: redirectUrl,
-    ipnUrl: ipnUrl,
-    lang: lang,
-    requestType: requestType,
-    autoCapture: autoCapture,
-    extraData: extraData,
-    orderGroupId: orderGroupId,
-    signature: signature,
-  });
-  console.log(requestBody);
-  // options for axios
-  const options = {
-    method: 'POST',
-    url: 'https://test-payment.momo.vn/v2/gateway/api/create',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(requestBody),
-    },
-    data: requestBody,
-  };
-
-  // Send the request and handle the response
-  let result;
-  try {
-    result = await axios(options);
-    return res.status(200).json(result.data);
-  } catch (error) {
-    return res.status(500).json({ statusCode: 500, message: error.message });
-  }
-}
-const deeplink = async() =>{
-    let {
-        accessKey,
-        secretKey,
-        orderInfo,
-        partnerCode,
-        redirectUrl,
-        ipnUrl,
-        requestType,
-        extraData,
-        orderGroupId,
-        autoCapture,
-        lang,
-    } = config;
-
-  var amount = '10000';
-  var orderId = partnerCode + new Date().getTime();
-  var requestId = orderId;
-
-  //before sign HMAC SHA256 with format
-  //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
-  var rawSignature =
-    'accessKey=' +
-    accessKey +
-    '&amount=' +
-    amount +
-    '&extraData=' +
-    extraData +
-    '&ipnUrl=' +
-    ipnUrl +
-    '&orderId=' +
-    orderId +
-    '&orderInfo=' +
-    orderInfo +
-    '&partnerCode=' +
-    partnerCode +
-    '&redirectUrl=' +
-    redirectUrl +
-    '&requestId=' +
-    requestId +
-    '&requestType=' +
-    requestType;
-
-  //signature
-  var signature = crypto
-    .createHmac('sha256', secretKey)
-    .update(rawSignature)
-    .digest('hex');
-
-  //json object send to MoMo endpoint
-  const requestBody = JSON.stringify({
-    partnerCode: partnerCode,
-    partnerName: 'Test',
-    storeId: 'MomoTestStore',
-    requestId: requestId,
-    amount: amount,
-    orderId: orderId,
-    orderInfo: orderInfo,
-    redirectUrl: redirectUrl,
-    ipnUrl: ipnUrl,
-    lang: lang,
-    requestType: requestType,
-    autoCapture: autoCapture,
-    extraData: extraData,
-    orderGroupId: orderGroupId,
-    signature: signature,
-  });
-
-  // options for axios
-  const options = {
-    method: 'POST',
-    url: 'https://test-payment.momo.vn/v2/gateway/api/create',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(requestBody),
-    },
-    data: requestBody,
-  };
-
-  // Send the request and handle the response
-//   let result;
-//   try {
-//     result = await axios(options);
-//     return res.status(200).json(result.data);
-//   } catch (error) {
-//     return res.status(500).json({ statusCode: 500, message: error.message });
-//   }
-    const deeplink = `momo://app?action=payWithApp&amount=${amount}&orderId=${bookingId}`;
-    res.json({
-    payUrl: deeplink
-    });
-}
-const generateLink = async (req, res) => {
+const Booking = require('../model/booking');
+const checkStatusTransaction=async (req, res) => {
   const { orderId } = req.body;
 
   // const signature = accessKey=$accessKey&orderId=$orderId&partnerCode=$partnerCode
@@ -307,9 +36,77 @@ const generateLink = async (req, res) => {
   };
 
   const result = await axios(options);
-
-  return res.status(200).json(result.data);
+  if(result.data.resultCode == 0){
+    return true;
+  }
+  return false;
 };
+const createPayment = async({ orderId, amount })=>{
+  let {
+    accessKey,
+    secretKey,
+    orderInfo,
+    partnerCode,
+    redirectUrl,
+    ipnUrl,
+    requestType,
+    extraData,
+    orderGroupId,
+    autoCapture,
+    lang,
+  } = config;
+  const requestId = orderId;
+  const rawSignature =
+    `accessKey=${accessKey}` +
+    `&amount=${amount}` +
+    `&extraData=${extraData}` +
+    `&ipnUrl=${ipnUrl}` +
+    `&orderId=${orderId}` +
+    `&orderInfo=${orderInfo}` +
+    `&partnerCode=${partnerCode}` +
+    `&redirectUrl=${redirectUrl}` +
+    `&requestId=${requestId}` +
+    `&requestType=${requestType}`;
+
+  const signature = crypto
+    .createHmac('sha256', secretKey)
+    .update(rawSignature)
+    .digest('hex');
+
+  const requestBody = JSON.stringify({
+    partnerCode,
+    partnerName: 'Test',
+    storeId: 'MomoTestStore',
+    requestId,
+    amount,
+    orderId,
+    orderInfo,
+    redirectUrl,
+    ipnUrl,
+    lang,
+    requestType,
+    autoCapture,
+    extraData,
+    orderGroupId,
+    signature,
+  });
+
+  const options = {
+    method: 'POST',
+    url: 'https://test-payment.momo.vn/v2/gateway/api/create',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(requestBody),
+    },
+    data: requestBody,
+  };
+  console.log(requestBody);
+  const result = await axios(options);
+  
+  return result.data; // 🔥 QUAN TRỌNG
+}
+
+
 const linkingMomo = async(req,res) => {
   console.log('linkmmo');
   let {
@@ -409,5 +206,64 @@ const linkingMomo = async(req,res) => {
 const callback = async(req,res) => {
   console.log('callback: ');
   console.log(req.body);
+  try {
+    const {
+      partnerCode,
+      orderId,
+      requestId,
+      amount,
+      orderInfo,
+      orderType,
+      transId,
+      resultCode,
+      message,
+      payType,
+      responseTime,
+      extraData,
+      signature
+    } = req.body;
+    if (resultCode === 0) {
+      await Booking.findOneAndUpdate(
+        { orderId }, // hoặc {_id: orderId}
+        {
+          status: 'booked',
+          momoTransId: transId,
+          paidAt: new Date(responseTime),
+        }
+      );
+    }
+    else {
+      await Booking.findOneAndUpdate(
+        { orderId },
+        { status: 'FAILED' }
+      );
+}
+    return res.status(200).json({
+      message: 'OK'
+    });
+
+  }catch(err){
+    return res.status(200).json({message: 'OK'});
 };
-module.exports={deeplink,linkingMomo,callback,createPayment}
+}
+
+const getStatus= async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    // Tìm booking theo orderId
+    const booking = await Booking.findOne({ orderId });
+
+    if (!booking) {
+      return res.status(404).json({ status: "pending", message: "Booking not found" });
+    }
+    console.log(booking);
+    // Giả sử booking.status lưu trạng thái thanh toán: "pending" | "booked" | "failed"
+    return res.status(200).json({ status: booking.status });
+  } catch (err) {
+    console.error("Error fetching payment status:", err);
+    return res.status(500).json({ status: "pending", message: "Server error" });
+  }
+};
+
+module.exports={linkingMomo,callback,createPayment,checkStatusTransaction,getStatus}

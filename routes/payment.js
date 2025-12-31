@@ -6,4 +6,6 @@ router.route('/link-wallet')
     .post(paymentController.linkingMomo)
 router.route('/callback')
     .post(paymentController.callback)
+router.route('/status/:orderId')
+    .get(paymentController.getStatus)
 module.exports = router;

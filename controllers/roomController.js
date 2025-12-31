@@ -1,5 +1,5 @@
 const Room = require('../model/room');
-
+const Booking = require('../model/booking');
 const getAllRoom = async (req, res) => {
     const rooms = await Room.find();
     if (!rooms) return res.status(204).json({ 'message': 'No room found.' });
@@ -13,10 +13,10 @@ const getAvailableRooms = async (req, res) => {
   }
 
   const bookedRoomIds = await Booking.find({
-    status: { $ne: "checked_out" },
-    checkIn: { $lt: new Date(checkOut) },
-    checkOut: { $gt: new Date(checkIn) }
-  }).distinct("room");
+  status: { $ne: "checked_out" },
+  "formData.checkIn": { $lt: new Date(checkOut) },
+  "formData.checkOut": { $gt: new Date(checkIn) }
+}).distinct("room");
 
   const availableRooms = await Room.find({
     _id: { $nin: bookedRoomIds }
