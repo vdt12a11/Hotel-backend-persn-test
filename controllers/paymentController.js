@@ -260,11 +260,12 @@ const callbackWallet = async (req, res) => {
         { new: true }
       );
       console.log("ok1");
-    }
-    if(user.linkingWallet === "true")
+      if(user.linkingWallet === "true")
     {
       console.log("ok2");
     }
+    }
+    
     return res.status(200).json({ message: "OK" });
 
   } catch (err) {
