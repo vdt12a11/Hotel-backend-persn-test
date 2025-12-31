@@ -254,16 +254,32 @@ const callbackWallet = async (req, res) => {
     const { partnerClientId, resultCode } = req.body;
 
     if (resultCode === 0 && partnerClientId) {
-      const user = await User.findOneAndUpdate(
+      let user = await User.findOneAndUpdate(
         { partnerClientId },
-        { $set: { linkingWallet: "true" } }, // 👈 boolean
+        { $set: { linkingWallet: true } },
         { new: true }
       );
-      console.log(user,"   :",partnerClientId);
-    }
-    
-    return res.status(200).json({ message: "OK" });
 
+      // fallback: partnerClientId is actually _id
+      if (!user) {
+        const mongoose = require('mongoose');
+        if (mongoose.Types.ObjectId.isValid(partnerClientId)) {
+          user = await User.findOneAndUpdate(
+            { _id: partnerClientId },
+            { $set: { linkingWallet: true, partnerClientId } },
+            { new: true }
+          );
+        }
+      }
+
+      if (!user) {
+        console.log('No user found for partnerClientId:', partnerClientId);
+      } else {
+        console.log('User updated:', user._id);
+      }
+    }
+
+    return res.status(200).json({ message: "OK" });
   } catch (err) {
     console.error("callbackWallet error:", err);
     return res.status(200).json({ message: "OK" });
