@@ -14,7 +14,7 @@ const handleBooking = async (req, res) => {
   const { room, formData,  totalPrice, userID,date } = req.body;
   console.log("dsa",userID);
   try {
-      totalPrices=20000;
+      totalPrices=totalPrice*26000;
       // Kiểm tra dữ liệu
       if (!room || !formData || !userID) {
           console.log("Thiếu dữ liệu bắt buộc");
