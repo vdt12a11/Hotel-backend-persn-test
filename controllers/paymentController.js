@@ -245,29 +245,29 @@ const callbackOrder = async(req,res) => {
     return res.status(200).json({message: 'OK'});
 };
 }
-const callbackWallet = async(req,res) => {
-  console.log('callbackWallet: ');
+const callbackWallet = async (req, res) => {
+  console.log("callbackWallet:");
   console.log(req.body);
+
   try {
-    const {
-      partnerClientId
-    } = req.body;
-    if (resultCode === 0) {
+    const { partnerClientId, resultCode } = req.body;
+
+    if (resultCode === 0 && partnerClientId) {
       await User.findOneAndUpdate(
-        { partnerClientId }, // hoặc {_id: orderId}
-        {
-          lingkingWallet: 'true',
-        }
+        { partnerClientId },
+        { $set: { linkingWallet: "true" } }, // 👈 boolean
+        { new: true }
       );
     }
-    return res.status(200).json({
-      message: 'OK'
-    });
 
-  }catch(err){
-    return res.status(200).json({message: 'OK'});
+    return res.status(200).json({ message: "OK" });
+
+  } catch (err) {
+    console.error("callbackWallet error:", err);
+    return res.status(200).json({ message: "OK" });
+  }
 };
-}
+
 const getStatus= async (req, res) => {
   const { orderId } = req.params;
   try {
