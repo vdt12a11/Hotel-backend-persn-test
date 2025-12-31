@@ -290,6 +290,7 @@ const getStatus= async (req, res) => {
   const { orderId } = req.params;
   try {
     // Tìm booking theo orderId
+    console.log('getStatus orderId:', orderId);
     const booking = await Booking.findOne({ orderId });
 
     if (!booking) {
