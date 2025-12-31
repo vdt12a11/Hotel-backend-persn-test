@@ -5,7 +5,7 @@ module.exports = {
   orderInfo: 'pay with MoMo',
   partnerCode: 'MOMO',
   redirectUrl: 'https://hotel-backend-persn-test.onrender.com/',
-  ipnUrl: 'https://hotel-backend-persn-test.onrender.com/payment/callback', //chú ý: cần dùng ngrok thì momo mới post đến url này được
+  ipnUrl: 'https://hotel-backend-persn-test.onrender.com/payment/callback/order', //chú ý: cần dùng ngrok thì momo mới post đến url này được
   requestType: 'captureWallet',
   extraData: '',
   orderGroupId: '',
