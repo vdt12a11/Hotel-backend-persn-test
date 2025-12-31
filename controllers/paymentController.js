@@ -127,7 +127,7 @@ const linkingMomo = async(req,res) => {
   var orderId = partnerCode + new Date().getTime();
   var requestId = orderId;
   const {userID,email} =req.body;
-  
+  console.log("email and userID ",userID,"  ",email);
   //before sign HMAC SHA256 with format
   //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
   var rawSignature =
@@ -193,7 +193,6 @@ const linkingMomo = async(req,res) => {
     },
     data: requestBody,
   };
-
   // Send the request and handle the response
   let result;
   try {
@@ -249,7 +248,6 @@ const callback = async(req,res) => {
 
 const getStatus= async (req, res) => {
   const { orderId } = req.params;
-
   try {
     // Tìm booking theo orderId
     const booking = await Booking.findOne({ orderId });

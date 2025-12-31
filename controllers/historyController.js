@@ -8,7 +8,6 @@ const getHistory = async (req, res) => {
     const userID = req.params.userID; // hoặc từ req.user nếu dùng JWT
     console.log("UserId:", userID);
     if (!userID) return res.status(400).json({ message: "Missing userId" });
-
     const bookings = await Booking.find({ userID }).
     select({
         _id:1,
