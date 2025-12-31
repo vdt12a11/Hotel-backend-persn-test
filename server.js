@@ -47,14 +47,6 @@ app.get('/', (req, res) => {
 });
 
 // body-parser error handler to catch empty/invalid JSON
-app.use((err, req, res, next) => {
-  if (err && (err.type === 'entity.parse.failed' || err instanceof SyntaxError)) {
-    console.error('Body parse error:', err.message);
-    return res.status(400).send('Invalid or empty JSON body');
-  }
-  next(err);
-});
-
 app.listen(PORT, () => {
     console.log(`Server đang chạy tại http://localhost:${PORT}`) ;
 });
