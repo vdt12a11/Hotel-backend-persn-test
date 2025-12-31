@@ -254,14 +254,17 @@ const callbackWallet = async (req, res) => {
     const { partnerClientId, resultCode } = req.body;
 
     if (resultCode === 0 && partnerClientId) {
-      await User.findOneAndUpdate(
+      const user = await User.findOneAndUpdate(
         { partnerClientId },
         { $set: { linkingWallet: "true" } }, // 👈 boolean
         { new: true }
       );
-      console.log("ok");
+      console.log("ok1");
     }
-
+    if(user.linkingWallet === "true")
+    {
+      console.log("ok2");
+    }
     return res.status(200).json({ message: "OK" });
 
   } catch (err) {
