@@ -26,6 +26,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    linkingWallet:{
+       type: String,
+        enum: ["false","true"],
+        default: "false",
+    },
     refreshToken: String
 });
 

@@ -1,4 +1,5 @@
 const Booking = require('../model/booking');
+const User = require('../model/user');
 const cron = require('node-cron');
 const paymentController = require('../controllers/paymentController');
 cron.schedule('* * * * *', async () => {  // chạy mỗi phút
@@ -29,7 +30,10 @@ const handleBooking = async (req, res) => {
       const orderId = `MOMO${newBooking._id}${Date.now()}`;
        newBooking.orderId = orderId;
       await newBooking.save();
-      
+      const user = await User.findById(userID);
+      if(user.linkingWallet == "false"){
+        return res.status(400).json({ message: "User chua lien ket vi" });
+      }
       const momoRes = await paymentController.createPayment({
         orderId,
         amount: totalPrices

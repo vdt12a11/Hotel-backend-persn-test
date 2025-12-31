@@ -202,8 +202,8 @@ const linkingMomo = async(req,res) => {
     return res.status(500).json({ statusCode: 500, message: error.message });
   }
 };
-const callback = async(req,res) => {
-  console.log('callback: ');
+const callbackOrder = async(req,res) => {
+  console.log('callbackOrder: ');
   console.log(req.body);
   try {
     const {
@@ -245,7 +245,29 @@ const callback = async(req,res) => {
     return res.status(200).json({message: 'OK'});
 };
 }
+const callbackWallet = async(req,res) => {
+  console.log('callbackWallet: ');
+  console.log(req.body);
+  try {
+    const {
+      partnerClientId
+    } = req.body;
+    if (resultCode === 0) {
+      await User.findOneAndUpdate(
+        { partnerClientId }, // hoặc {_id: orderId}
+        {
+          lingkingWallet: 'true',
+        }
+      );
+    }
+    return res.status(200).json({
+      message: 'OK'
+    });
 
+  }catch(err){
+    return res.status(200).json({message: 'OK'});
+};
+}
 const getStatus= async (req, res) => {
   const { orderId } = req.params;
   try {
@@ -263,4 +285,4 @@ const getStatus= async (req, res) => {
   }
 };
 
-module.exports={linkingMomo,callback,createPayment,checkStatusTransaction,getStatus}
+module.exports={linkingMomo,callbackWallet,callbackOrder,createPayment,checkStatusTransaction,getStatus}
