@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const Booking = require('../model/booking');
 const checkStatusTransaction=async (req, res) => {
   const { orderId } = req.body;
-
+  console.log("check transaction:",orderId);
   // const signature = accessKey=$accessKey&orderId=$orderId&partnerCode=$partnerCode
   // &requestId=$requestId
   var secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
