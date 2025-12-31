@@ -122,7 +122,7 @@ const linkingMomo = async(req,res) => {
     autoCapture,
     lang,
   } = config;
-
+  ipnUrl = 'https://hotel-backend-persn-test.onrender.com/payment/callback/wallet';
   var amount = '0';
   var orderId = partnerCode + new Date().getTime();
   var requestId = orderId;
@@ -206,7 +206,7 @@ const callbackOrder = async(req,res) => {
   console.log('callbackOrder: ');
   console.log(req.body);
   try {
-    const {
+    let {
       partnerCode,
       orderId,
       requestId,
@@ -221,6 +221,7 @@ const callbackOrder = async(req,res) => {
       extraData,
       signature
     } = req.body;
+    ipnUrl = 'https://hotel-backend-persn-test.onrender.com/payment/callback/order';
     if (resultCode === 0) {
       await Booking.findOneAndUpdate(
         { orderId }, // hoặc {_id: orderId}
