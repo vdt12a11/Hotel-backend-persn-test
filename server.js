@@ -23,12 +23,7 @@ app.use(express.json({
 }));
 
 // incoming request logger (headers + content-length) for webhook debugging
-app.use((req, res, next) => {
-  console.log('INCOMING', req.method, req.originalUrl);
-  console.log('content-type:', req.headers['content-type']);
-  console.log('content-length:', req.headers['content-length']);
-  next();
-});
+
 
 // Route chính
 
@@ -47,6 +42,7 @@ app.get('/', (req, res) => {
 });
 
 // body-parser error handler to catch empty/invalid JSON
+
 app.listen(PORT, () => {
     console.log(`Server đang chạy tại http://localhost:${PORT}`) ;
 });
