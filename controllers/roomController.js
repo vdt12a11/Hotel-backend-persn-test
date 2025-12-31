@@ -7,7 +7,7 @@ const getAllRoom = async (req, res) => {
 }
 const getAvailableRooms = async (req, res) => {
   const { checkIn, checkOut } = req.query;
-
+  console.log("vo lay phong");
   if (!checkIn || !checkOut) {
     return res.status(400).json({ message: "Missing dates" });
   }
