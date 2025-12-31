@@ -259,6 +259,7 @@ const callbackWallet = async (req, res) => {
         { $set: { linkingWallet: "true" } }, // 👈 boolean
         { new: true }
       );
+      console.log("ok");
     }
 
     return res.status(200).json({ message: "OK" });
