@@ -20,17 +20,16 @@ const handleBooking = async (req, res) => {
           console.log("Thiếu dữ liệu bắt buộc");
           return res.status(400).json({ message: "Missing required fields" });
       }
+      const orderId = `MOMO${Date.now()}${Math.floor(Math.random()*10000)}`;
       // Tạo object booking
       const newBooking = await Booking.create({
-          userID,
-          room,
-          formData,
-          totalPrice,
-          date:date || new Date().toISOString()
+        userID,
+        room,
+        formData,
+        totalPrice,
+        date: date || new Date().toISOString(),
+        orderId
       });
-      const orderId = `MOMO${newBooking._id}${Date.now()}`;
-       newBooking.orderId = orderId;
-      await newBooking.save();
       const user = await User.findById(userID);
       if(user.linkingWallet == "false"){
         return res.status(400).json({ message: "User chua lien ket vi" });
