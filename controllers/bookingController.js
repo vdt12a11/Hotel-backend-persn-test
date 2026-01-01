@@ -56,13 +56,14 @@ const checkInBooking = async (req, res) => {
   
   try {
     const { id } = req.params;
-    
+    console.log("da vo luog checkin 1");
     const booking = await Booking.findById(id);
     console.log(id);
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
     console.log(booking);
+    console.log("da vo luog checkin 2");
     if (booking.status !== "booked") {
       return res.status(400).json({
         message: "Booking cannot be checked in"
