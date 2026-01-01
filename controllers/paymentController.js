@@ -103,7 +103,7 @@ const createPayment = async({ orderId, amount })=>{
   };
   console.log(requestBody);
   const result = await axios(options);
-  
+  console.log("result: ",result);
   return result.data; // 🔥 QUAN TRỌNG
 }
 
