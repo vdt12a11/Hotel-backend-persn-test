@@ -42,6 +42,7 @@ const checkStatusTransaction=async (req, res) => {
   return false;
 };
 const createPayment = async({ orderId, amount })=>{
+  console.log("da vao luong payment");
   let {
     accessKey,
     secretKey,
