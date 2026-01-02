@@ -298,7 +298,7 @@ const getStatus= async (req, res) => {
       return res.status(404).json({ status: "pending", message: "Booking not found" });
     }
     // Giả sử booking.status lưu trạng thái thanh toán: "pending" | "booked" | "failed"
-    return res.status(200).json({ status: booking.status });
+    return res.status(200).json({ status: booking.status, deeplink: booking.deeplink });
   } catch (err) {
     console.error("Error fetching payment status:", err);
     return res.status(500).json({ status: "pending", message: "Server error" });

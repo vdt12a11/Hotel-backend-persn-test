@@ -34,6 +34,10 @@ const bookingSchema = new mongoose.Schema({
       type: Date,
       default: null
     },
+    deeplink: {
+      type: String,
+      default: null
+    },
     createdAt: {
       type: Date,
       default: () => new Date().toISOString(),

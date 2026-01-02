@@ -40,6 +40,10 @@ const handleBooking = async (req, res) => {
       });
       console.log(momoRes);
       console.log("Tạo booking thành cônggg");
+
+      newBooking.deeplink = momoRes.deeplink;
+      await newBooking.save(); // <-- thêm dòng này để persist vào DB
+      
       return res.status(201).json({
       bookingId: newBooking._id,
       orderId,
