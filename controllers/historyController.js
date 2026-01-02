@@ -10,6 +10,7 @@ const getHistory = async (req, res) => {
     const bookings = await Booking.find({ userID }).
     select({
         _id:1,
+        deeplink:1,
         "room.name": 1,
         "room.price": 1,
         "room.image": 1,
@@ -23,7 +24,6 @@ const getHistory = async (req, res) => {
         createdAt: 1,
         status:1
       }).sort({ date: -1 }); // mới nhất trước
-    console.log("Bookings:", bookings);
     const formatted = bookings.map(b => ({
         ...b._doc,
         createdAt: new Date(b.createdAt).toLocaleString("vi-VN", {
