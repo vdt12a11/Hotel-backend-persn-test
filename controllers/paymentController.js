@@ -55,7 +55,7 @@ const createPayment = async({ orderId, amount })=>{
     orderGroupId,
     autoCapture,
     lang,
-  } = config;
+  } = config.callbackod;
   const requestId = orderId;
   const rawSignature =
     `accessKey=${accessKey}` +
@@ -101,9 +101,9 @@ const createPayment = async({ orderId, amount })=>{
     },
     data: requestBody,
   };
-  console.log(requestBody);
+  //console.log(requestBody);
   const result = await axios(options);
-  console.log("result: ",result);
+  //console.log("result: ",result);
   return result.data; // 🔥 QUAN TRỌNG
 }
 
@@ -122,13 +122,12 @@ const linkingMomo = async(req,res) => {
     orderGroupId,
     autoCapture,
     lang,
-  } = config;
-  ipnUrl = 'https://hotel-backend-persn-test.onrender.com/payment/callback/wallet';
+  } = config.callbackwl;
   var amount = '0';
   var orderId = partnerCode + new Date().getTime();
   var requestId = orderId;
   const {userID,email} =req.body;
-  console.log("email and userID ",userID,"  ",email);
+  //console.log("email and userID ",userID,"  ",email);
   //before sign HMAC SHA256 with format
   //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
   var rawSignature =
@@ -183,7 +182,7 @@ const linkingMomo = async(req,res) => {
       partnerClientAlias: email,
     },
   });
-  console.log(requestBody);
+  //console.log(requestBody);
   // options for axios
   const options = {
     method: 'POST',
@@ -222,7 +221,7 @@ const callbackOrder = async(req,res) => {
       extraData,
       signature
     } = req.body;
-    ipnUrl = 'https://hotel-backend-persn-test.onrender.com/payment/callback/order';
+    //ipnUrl = 'https://hotel-backend-persn-test.onrender.com/payment/callback/order';
     if (resultCode === 0) {
       await Booking.findOneAndUpdate(
         { orderId }, // hoặc {_id: orderId}

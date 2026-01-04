@@ -2,7 +2,6 @@ const Booking = require('../model/booking');
 
 const getHistory = async (req, res) => {
     console.log("da vo history controller");
-    console.log(req.params);
     try {
     const userID = req.params.userID; // hoặc từ req.user nếu dùng JWT
     console.log("UserId:", userID);
@@ -37,7 +36,7 @@ const getHistory = async (req, res) => {
     }
 }
 const getHistoryUpcoming = async (req, res) => {
-    console.log("da vo history upcoming");
+    //console.log("da vo history upcoming");
     try {
         const userID = req.params.userID;
         console.log("UserId:", userID);

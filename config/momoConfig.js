@@ -1,14 +1,29 @@
-
-module.exports = {
+const callbackwl ={
   accessKey: 'F8BBA842ECF85',
   secretKey: 'K951B6PE1waDMi640xX08PD3vg6EkVlz',
   orderInfo: 'pay with MoMo',
   partnerCode: 'MOMO',
   redirectUrl: 'https://hotel-backend-persn-test.onrender.com/',
-  ipnUrl: 'https://hotel-backend-persn-test.onrender.com/payment/callback/order', //chú ý: cần dùng ngrok thì momo mới post đến url này được
+  ipnUrl: 'https://overartificially-uncaptious-jaxson.ngrok-free.dev/payment/callback/wallet', //chú ý: cần dùng ngrok thì momo mới post đến url này được
   requestType: 'captureWallet',
   extraData: '',
   orderGroupId: '',
   autoCapture: true,
   lang: 'vi',
+}
+const callbackod ={
+  accessKey: 'F8BBA842ECF85',
+  secretKey: 'K951B6PE1waDMi640xX08PD3vg6EkVlz',
+  orderInfo: 'pay with MoMo',
+  partnerCode: 'MOMO',
+  redirectUrl: 'https://hotel-backend-persn-test.onrender.com/',
+  ipnUrl: 'https://overartificially-uncaptious-jaxson.ngrok-free.dev/payment/callback/order', //chú ý: cần dùng ngrok thì momo mới post đến url này được
+  requestType: 'captureWallet',
+  extraData: '',
+  orderGroupId: '',
+  autoCapture: true,
+  lang: 'vi',
+}
+module.exports = {
+  callbackwl,callbackod
 };
